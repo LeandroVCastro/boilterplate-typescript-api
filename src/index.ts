@@ -1,23 +1,27 @@
-import { createServer, Server, plugins } from 'restify';
+import express, { Router, Request, Response } from 'express';
 import * as dotenv from 'dotenv';
-dotenv.config();
 import { routes } from './http/routes';
-// import usersRoutes from './users.routes';
-// import connectMongoDb from './connect.mongodb';
-// import { environment } from './environment';
+dotenv.config();
+const app = express();
+
+const router = Router();
+
+app.use(express.json());
 
 const initApp = async () => {
   // cria o servidor da nossa aplicacao
-  const app: Server = createServer({
-    name: 'api.restify',
-    version: '1.0.0'
-  });
+  // const app: Server = createServer({
+  //   name: 'api.restify',
+  //   version: '1.0.0'
+  // });
 
-  routes(app);
+  routes(router);
+
+  app.use(router);
 
   // habilita o uso de req.body e req.query
-  app.use(plugins.queryParser());
-  app.use(plugins.bodyParser());
+  // app.use(plugins.queryParser());
+  // app.use(plugins.bodyParser());
 
   try {
     // coloca a aplicacao para rodar na porta setada na variavel [ environment.PORT ]
